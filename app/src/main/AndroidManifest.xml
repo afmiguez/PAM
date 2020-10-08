@@ -14,6 +14,25 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name="edu.ufp.pam.examples.masterdetail.CustomerItemListActivity"
+            android:label="@string/title_customeritem_list"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="edu.ufp.pam.examples.masterdetail.CustomerItemDetailActivity"
+            android:label="@string/title_customeritem_detail"
+            android:parentActivityName="edu.ufp.pam.examples.masterdetail.CustomerItemListActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="edu.ufp.pam.examples.masterdetail.CustomerItemListActivity" />
+        </activity>
+        <activity
             android:name="edu.ufp.pam.examples.navdraw.MainNavDrawActivity"
             android:label="@string/title_activity_main_nav_draw"
             android:theme="@style/AppTheme.NoActionBar">
