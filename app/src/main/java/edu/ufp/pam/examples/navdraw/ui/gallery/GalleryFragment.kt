@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import edu.ufp.pam.examples.navdraw.R
+import com.example.pamandroidkotlin.R
 
 class GalleryFragment : Fragment() {
 
