@@ -18,15 +18,13 @@ import kotlinx.coroutines.launch
  *
  */
 @Database(
-    entities = [Customer::class, CustomerTask::class],
-    views = [CustomerTaskDetailView::class],
-    version = 9
+    entities = [Customer::class],
+    views = [],
+    version = 1
 )
 abstract class CustomersDatabase : RoomDatabase() {
 
     abstract fun customerDao(): CustomerDao
-    abstract fun customerTaskDao(): CustomerTaskDao
-    abstract fun customerTaskDetailViewDao(): CustomerTaskDetailViewDao
 
     //Behaves like a static attribute
     companion object {

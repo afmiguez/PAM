@@ -61,8 +61,10 @@ interface CustomerDao {
      * Get all customers minimal info.
      * @return the customers from the table with specific cities.
      */
+/*
     @Query("SELECT customername, customercompany FROM customers")
     fun loadFullCustomerMinimalInfo(): List<CustomerMinimal>
+*/
 
     /**
      * Insert a customer in the database (returns id), replace it if already exists.
