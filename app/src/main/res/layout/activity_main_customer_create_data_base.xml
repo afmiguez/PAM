@@ -7,11 +7,13 @@
     tools:context="edu.ufp.pam.examples.masterdetail.MainCustomerCreateDataBaseActivity">
 
     <TextView
-        android:id="@+id/textView5"
-        android:layout_width="280dp"
-        android:layout_height="224dp"
+        android:id="@+id/textViewListContacts"
+        android:layout_width="296dp"
+        android:layout_height="340dp"
+        android:layout_marginTop="254dp"
+        android:layout_marginBottom="76dp"
         android:text="TextView"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/addCustomerButtonMain"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -21,7 +23,21 @@
         android:id="@+id/buttonCreateDatabaseCustomers"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="145dp"
+        android:layout_marginBottom="61dp"
         android:text="Button"
-        tools:layout_editor_absoluteX="161dp"
-        tools:layout_editor_absoluteY="145dp" />
+        app:layout_constraintBottom_toTopOf="@+id/textViewListContacts"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/addCustomerButtonMain"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="129dp"
+        android:text="Criar novo Customer"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

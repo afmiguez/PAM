@@ -1,32 +1,131 @@
 package edu.ufp.pam.examples.masterdetail
 
+import android.app.Activity
 import android.content.Intent
 import android.os.AsyncTask
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.TextView
 import android.widget.Toast
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.example.pamandroidkotlin.R
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import edu.ufp.pam.examples.masterdetail.dbcontacts.Customer
 import edu.ufp.pam.examples.masterdetail.dbcontacts.LoaderCustomersContentDatabase
+import edu.ufp.pam.examples.masterdetail.viewModel.CustomersViewModel
 import kotlinx.android.synthetic.main.activity_main_customer_create_data_base.*
+import kotlinx.android.synthetic.main.activity_new_customer.*
 import java.lang.ref.WeakReference
 
 class MainCustomerCreateDataBaseActivity : AppCompatActivity() {
+
+    //Declare property for associated CustomersViewModel
+    private lateinit var customersViewModel: CustomersViewModel
+
+    //Code for communication between activities
+    private val newCustomerActivityRequestCode = 1
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_customer_create_data_base)
 
-        buttonCreateDatabaseCustomers.setOnClickListener {
-            //Use an AsyncTask to create the database and populate it with sample data
-            CustomersDatabaseAsyncTask(this@MainCustomerCreateDataBaseActivity).execute("Nothing useful for this task! :)")
+        // setSupportActionBar(findViewById(R.id.toolbar))
 
-            /*
-            val replyIntent = Intent()
-            val EXTRA_REPLY = "com.example.android.wordlistsql.REPLY"
-            replyIntent.putExtra(EXTRA_REPLY, "Teste")
-            setResult(Activity.RESULT_OK, replyIntent)
-            finish()
-             */
+        val textViewListContacts = findViewById<TextView>(R.id.textViewListContacts)
+
+        // Get new or existing CustomersViewModel from ViewModelProvider
+        //customersViewModel = ViewModelProvider(this).get(CustomersViewModel::class.java)
+        customersViewModel =
+            ViewModelProvider(this,
+                ViewModelProvider.AndroidViewModelFactory.getInstance(this.application)
+            ).get(CustomersViewModel::class.java)
+
+        // Add Observer for LiveData associated with customersViewModel.allCustomers
+        // The onChanged() is triggered whenever observed data changes with activity in foreground.
+        customersViewModel.allCustomers.observe(
+            this,
+            Observer { customers ->
+                // Update cached list of customers
+                customers?.let {
+                    Log.e(this.javaClass.simpleName,
+                        "onChanged(): customers.size=${customers.size}"
+                    )
+                    //Clear textViewListContacts
+                    textViewListContacts.text=""
+                    var i = 0
+                    for (c in it) {
+                        Log.e(this.javaClass.simpleName,
+                            "onChanged(): customer[$i++]=${c}"
+                        )
+                        val item = "[${c.customerId}] ${c.customerName}"
+                        textViewListContacts.append("${item} | ")
+                    }
+                }
+            })
+
+        addCustomerButtonMain.setOnClickListener {
+            //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+            // .setAction("Action", null).show()
+
+            //Create an Intent to launch the NewCustomerActivity
+            val intent =
+                Intent(
+                    this@MainCustomerCreateDataBaseActivity,
+                    NewCustomerActivity::class.java
+                )
+            startActivityForResult(intent, newCustomerActivityRequestCode)
+        }
+
+        //Use Create Button to create the DB and insert dummy test customers
+        buttonCreateDatabaseCustomers.setOnClickListener {
+            //Deprecated way...
+            //use an AsyncTask to create the database and populate it with sample data
+           // CustomersDatabaseAsyncTask(this@MainCustomerCreateDataBaseActivity)
+              //  .execute("Dummy parameter string not useful for this task! :)")
+        }
+    }
+/*
+    ** When get back to Main Activity from NewCustomerActivity, checks if it returns RESULT_OK
+    *  - then insert the new customer in database by calling
+    *    the insert() method on ViewModel;
+    *  - else show a Toast message.
+    */
+    override fun onActivityResult(requestCode: Int, resultCode: Int, intentData: Intent?) {
+        super.onActivityResult(requestCode, resultCode, intentData)
+
+        Log.e(
+            this.javaClass.simpleName,
+            "onActivityResult(): back from NewCustomerActivity..."
+        )
+        if (requestCode == newCustomerActivityRequestCode && resultCode == Activity.RESULT_OK) {
+            intentData?.let { data ->
+                val customerName : String? =
+                    data.getStringExtra(NewCustomerActivity.EXTRA_CUSTOMER_NAME_REPLY_KEY)
+                Log.e(
+                    this.javaClass.simpleName,
+                    "onActivityResult(): new customer = $customerName"
+                )
+                val customerIndex : String? = customerName!!.subSequence(
+                    customerName.length - 2,
+                    customerName.length
+                ).toString()
+                //Customer(i, "Tio Patinhas $i", "Patinhas $i Lda", "Rua Sesamo $i", "Porto", "+35122000000$i")
+                val customer = Customer(
+                    0,
+                    customerName,
+                    "Patinhas ${customerIndex} Lda",
+                    "Rua Sesamo $customerIndex",
+                    "Porto",
+                    "+35122000000$customerIndex",
+                    null
+                )
+                customersViewModel.insert(customer)
+                Unit
+            }
+        } else {
+            Toast.makeText(applicationContext, "Empty customer... not saved!!", Toast.LENGTH_LONG).show()
         }
     }
 
