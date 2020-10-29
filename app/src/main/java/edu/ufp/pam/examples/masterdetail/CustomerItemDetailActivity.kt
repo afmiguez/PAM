@@ -21,7 +21,7 @@ class CustomerItemDetailActivity : AppCompatActivity() {
         setContentView(R.layout.activity_customeritem_detail)
         setSupportActionBar(findViewById(R.id.detail_toolbar))
 
-        findViewById<FloatingActionButton>(R.id.fab).setOnClickListener { view ->
+        findViewById<FloatingActionButton>(R.id.fab_farrusco).setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own detail action", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
         }

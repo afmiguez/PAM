@@ -115,6 +115,14 @@ dependencies {
     // Optional - Test helpers for LiveData
     testImplementation "androidx.arch.core:core-testing:2.1.0"
 
+    implementation 'com.android.volley:volley:1.1.1'
+    implementation 'com.google.android.gms:play-services-cronet:17.0.0'
+    implementation 'com.squareup.okhttp3:okhttp:4.2.2'
+    implementation 'org.conscrypt:conscrypt-android:2.2.1'
+    def workmanager_version = "2.4.0"
+    implementation "androidx.work:work-runtime:$workmanager_version"
+    implementation "android.arch.work:work-runtime-ktx:$workmanager_version"
+    implementation "androidx.concurrent:concurrent-futures-ktx:1.1.0"
 }
 
 /*
